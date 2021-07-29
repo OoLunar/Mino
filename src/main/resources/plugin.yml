@@ -1,0 +1,15 @@
+main: net.forsaken_borders.mino.App
+name: Mino
+version: 0.1.0
+
+commands:
+   map:
+      description: Sends the dynmap link
+      usage: /map
+   shrug:
+      description: Adds some shrug text to your message
+      usage: /shrug
+   throw:
+      description: Throws a player
+      usage: /throw
+      permission: mino.throw

@@ -4,3 +4,4 @@ server/
 .classpath/
 .project/
 .settings/
+src/test/

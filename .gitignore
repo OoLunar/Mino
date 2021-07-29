@@ -1,3 +1,6 @@
-./target
-./server
-./.vscode
+target/
+server/
+.vscode/
+.classpath/
+.project/
+.settings/

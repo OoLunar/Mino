@@ -11,6 +11,8 @@ import net.forsaken_borders.mino.commands.CommandMap;
 import net.forsaken_borders.mino.commands.CommandRin;
 import net.forsaken_borders.mino.commands.CommandShrug;
 import net.forsaken_borders.mino.commands.CommandThrow;
+import net.forsaken_borders.mino.tab_completers.TabCompleterRin;
+import net.forsaken_borders.mino.tab_completers.TabCompleterThrow;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.economy.Economy;
@@ -29,6 +31,7 @@ public class App extends JavaPlugin {
         this.getCommand("map").setExecutor(new CommandMap());
         this.getCommand("shrug").setExecutor(new CommandShrug());
         this.getCommand("throw").setExecutor(new CommandThrow());
+        this.getCommand("throw").setTabCompleter(new TabCompleterThrow());
         if (vaultEnabled()) {
             setupEconomy();
             setupPermissions();
@@ -51,6 +54,7 @@ public class App extends JavaPlugin {
 
             if (Economy != null && Permissions != null && Essentials != null) {
                 this.getCommand("rin").setExecutor(new CommandRin());
+                this.getCommand("rin").setTabCompleter(new TabCompleterRin());
             }
         } else {
             Logger.warning("Vault is not enabled! Commands that require permissions or economy will be disabled.");

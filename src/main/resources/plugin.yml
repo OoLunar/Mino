@@ -1,15 +1,36 @@
 main: net.forsaken_borders.mino.App
 name: Mino
 version: 0.1.0
+description: A general plugin for the Minecraft server mc.forsaken-borders.net 
+api-version: 1.17
+load: POSTWORLD
+author: lunar@forsaken-borders.net
+website: https://github.com/OoLunar/Mino
+softdepend: [Essentials, Vault]
 
 commands:
-   map:
-      description: Sends the dynmap link
-      usage: /map
-   shrug:
-      description: Adds some shrug text to your message
-      usage: /shrug
-   throw:
-      description: Throws a player
-      usage: /throw
-      permission: mino.throw
+  map:
+    description: Sends the dynmap link
+    usage: /map
+  shrug:
+    description: Adds some shrug text to your message
+    usage: /shrug
+  throw:
+    description: Throws a player
+    usage: /throw
+    permission: mino.throw
+  rin:
+    description: A list of continent Rin''s commands.
+    usage: /rin [purchase_portal_room|portal_room]
+
+permissions:
+  mino.rin:
+    children:
+      mino.rin.portal_room: false
+      mino.rin.purchase_portal_room: true
+  mino.rin.portal_room:
+    description: Allows usage of Rin''s portal room.
+    default: false
+  mino.rin.purchase_portal_room:
+    description: Allows a player to purchase the portal room command.
+    default: true

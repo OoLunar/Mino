@@ -1,65 +1,9 @@
-options:
-    server: &8[&cServer&8]&r
-
-command /map:
-    executable by: players
-    usage: &cUsage: &7/map
-    description: Sends the Dynmap link.
-    trigger:
-        send "&7https://mc.forsaken-borders.net/dynmap/" to player
-
 command /build:
     executable by: players
     usage: &cUsage: &7/build
     description: Teleports you to the build world.
     trigger:
         execute command "/mvtp %player% build"
-
-command /shrug [<string>]:
-    executable by: console and players
-    usage: &cUsage: /shrug [message]
-    description: Adds a shrug at the end of your message.
-    trigger:
-        if arg-1 is set:
-            set {_text} to "%arg-1% ¯\_(ツ)_/¯"
-        else:
-            set {_text} to "¯\_(ツ)_/¯"
-        make player send message {_text}
-
-command /throw <player>:
-    executable by: players
-    usage: &cUsage: &7/throw <player>
-    description: Throws a player far away from you.
-    permission: continent.admin
-    permission message: @server &cUnknown command.
-    trigger:
-        thrust arg-1 up at speed 0.7
-        push arg-1 backwards at speed 2.7
-
-command /sprint:
-    executable by: players
-    usage: &cUsage: &7/sprint
-    description: Makes you run faster when you sprint.
-    trigger:
-        if {stats::%player's uuid%::permissions::sprint} is true:
-            if {stats::%player's uuid%::sprintEnabled} is true:
-                set {stats::%player's uuid%::sprintEnabled} to false
-                send action bar "&cYou've stopped running..." to player
-            else:
-                set {stats::%player's uuid%::sprintEnabled} to true
-                send action bar "&aRun as fast as you can!" to player
-        else:
-            send "{@server} &cYou don't have permission for that command!"
-
-command /permission <boolean> <player> <string>:
-    executable by: console and players
-    permission: continent.admin
-    permission message: @server &cUnknown command.
-    usage: &cUsage: &7/permission <boolean> <player> <string>
-    description: Adds or removes a custom permission.
-    trigger:
-        if {stats::%arg-2's uuid%::permissions::%arg-3%} is not arg-1:
-            set {stats::%arg-2's uuid%::permissions::%arg-3%} to arg-1
 
 command /ninja:
     executable by: players

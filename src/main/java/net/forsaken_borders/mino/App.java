@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import com.earth2me.essentials.Essentials;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,8 +15,10 @@ import net.forsaken_borders.mino.commands.RinCommand;
 import net.forsaken_borders.mino.commands.ShrugCommand;
 import net.forsaken_borders.mino.commands.SprintCommand;
 import net.forsaken_borders.mino.commands.ThrowCommand;
+import net.forsaken_borders.mino.event_listeners.OnDamage;
 import net.forsaken_borders.mino.event_listeners.OnPlayerJoin;
 import net.forsaken_borders.mino.event_listeners.OnPlayerQuit;
+import net.forsaken_borders.mino.event_listeners.OnServerListPing;
 import net.forsaken_borders.mino.event_listeners.OnSprint;
 import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
@@ -43,9 +46,12 @@ public class App extends JavaPlugin {
         manager.registerCommand(new RinCommand());
 
         Logger = getLogger();
-        this.getServer().getPluginManager().registerEvents(new OnSprint(), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerQuit(), this);
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new OnSprint(), this);
+        pluginManager.registerEvents(new OnPlayerJoin(), this);
+        pluginManager.registerEvents(new OnPlayerQuit(), this);
+        pluginManager.registerEvents(new OnDamage(), this);
+        pluginManager.registerEvents(new OnServerListPing(), this);
         if (!vaultEnabled()) {
             Logger.warning("Vault is not enabled! Commands that require permissions or economy will be disabled.");
         }

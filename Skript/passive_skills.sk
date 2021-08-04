@@ -1,20 +1,6 @@
 options:
     prefix: &7[<##7b84d1>Continent&7]&r
 
-on damage of player:
-    if damage cause is fall:
-        if {stats::%victim's uuid%::permissions::batWings} is true:
-            set damage to damage / 2
-            send action bar "&aHalved your fall damage!" to victim
-
-on sprint toggle:
-    if {stats::%player's uuid%::permissions::sprint} is true:
-        if {stats::%player's uuid%::sprintEnabled} is true:
-            if player is not sprinting:
-                set the player's walk speed to 0.3
-            else if player is sprinting:
-                set the player's walk speed to 0.2
-
 on rightclick with a sword:
     if {stats::%player's uuid%::permissions::buff} is true:
         if health of player <= 10:

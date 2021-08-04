@@ -1,27 +1,7 @@
-options:
-    prefix: &7[<##7b84d1>Continent&7]&r
-
-on first join:
-    make player execute command "/spawn"
-    make player execute command "/continent_info"
-
-on death of a player:
-    replace "%player%" with player's display name in death message
-    if attacker is a player:
-        replace "%attacker%" with attacker's display name in death message
-
 on chat:
     replace "<3" with "&c❤&r" in message
     replace "/shrug" with "¯\_(ツ)_/¯" in message
     replace "$" with "ẓ" in message
-
-on server list ping:
-    clear the hover list
-    if player count is higher than 0:
-        loop all players:
-            add loop-player's display name to the hover list
-    else:
-        add "Nobody is online!" to the hover list
 
 on command "/fireball":
     if player has permission "essentials.fireball":

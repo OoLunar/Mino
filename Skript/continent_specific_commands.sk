@@ -1,0 +1,17 @@
+options:
+    continentRin: <##DF245B>Rin&r
+
+command /rin_portal_room:
+    executable by: players
+    usage: &cUsage: &7/rin_portal_room
+    description: Issues a 1 time fee of $3000 and teleports the user to the portal room.
+    trigger:
+        if {stats::%player's uuid%::permissions::rinPortalRoom} is true:
+            teleport player to location 3878, 115, 12280 in world "world"
+        else:
+            if player's balance is greater than or equal to 3000:
+                make player execute "/pay Ben_The_Bergen 3000"
+                set {stats::%player's uuid%::permissions::rinPortalRoom} to true
+            else:
+                send "&7[{@continentRin}&7] &c3000ẓ is required to pay the one time portal room fee!" to player
+                stop trigger

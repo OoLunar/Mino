@@ -1,0 +1,40 @@
+options:
+    prefix: &7[<##7b84d1>Continent&7]&r
+
+on damage of player:
+    if damage cause is fall:
+        if {stats::%victim's uuid%::permissions::batWings} is true:
+            set damage to damage / 2
+            send action bar "&aHalved your fall damage!" to victim
+
+on sprint toggle:
+    if {stats::%player's uuid%::permissions::sprint} is true:
+        if {stats::%player's uuid%::sprintEnabled} is true:
+            if player is not sprinting:
+                set the player's walk speed to 0.3
+            else if player is sprinting:
+                set the player's walk speed to 0.2
+
+on rightclick with a sword:
+    if {stats::%player's uuid%::permissions::buff} is true:
+        if health of player <= 10:
+            if unix timestamp of now >= {stats::%player's uuid%::strengthTimeout}:
+                add strength to potion effects of player
+                set {stats::%player's uuid%::strengthTimeout} to (unix timestamp of now) + 45
+                send action bar "&aAdrenaline gives you strength!" to player
+            else if {stats::%player's uuid%::strengthTimeout} is not set:
+                add strength to potion effects of player
+                set {stats::%player's uuid%::strengthTimeout} to (unix timestamp of now) + 45
+                send action bar "&aAdrenaline gives you strength!" to player
+            else:
+                send action bar "&c%{stats::%player's uuid%::strengthTimeout} - (unix timestamp of now)% second cooldown!" to player
+
+on eat of rotten flesh:
+    if {stats::%player's uuid%::permissions::monsterEyes} is true:
+        cancel event
+        remove 1 rotten flesh from player
+        set the player's food level to player's food level + 4
+        set saturation of player to saturation of player + 0.8
+        set {_randomNumber} to random number between 0 and 100
+        if {_randomNumber} >= 40:
+            apply potion of night vision to the player for 30 seconds

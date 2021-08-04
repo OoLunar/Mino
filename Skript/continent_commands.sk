@@ -1,0 +1,195 @@
+options:
+    prefix: &8[&cContinent&8]&r
+    server: &8[&cServer&8]&r
+    continentRin: <##DF245B>Rin&r
+    continentSunmere: <##ff4500>Sunmere&r
+    continentThorin: <##C0a9c9>Thorin&r
+    continentMithloth: <##1cae1e>Mithloth&r
+ 
+on inventory click:
+    if event-inventory = (metadata tag "ContinentMenuGUI" of player):
+        cancel event
+        close player's inventory
+        execute console command "pex user %player% add continent.admin"
+        if index of event-slot is 0:
+            make player execute command "/continent_assign mithloth"
+        else if index of event-slot is 1:
+            make player execute command "/continent_assign rin"
+        else if index of event-slot is 2:
+            make player execute command "/continent_assign sunmere"
+        else if index of event-slot is 3:
+            make player execute command "/continent_assign thorin"
+        execute console command "pex user %player% remove continent.admin"
+
+command /continent_menu:
+    executable by: players
+    usage: &cUsage: &7/continent_menu
+    description: Opens up the continent menu.
+    trigger:
+        if {stats::%player's uuid%::continentChosen} is "<none>":
+            send "{@prefix} &cIf you wish to change your continent, please go pay the fee over at the International Shop!"
+            stop trigger
+        else if {stats::%player's uuid%::continentChosen} is true:
+            send "{@prefix} &cIf you wish to change your continent, please go pay the fee over at the International Shop!"
+            stop trigger
+        else:
+            set metadata tag "ContinentMenuGUI" of player to chest inventory with 1 row named "Continent Menu"
+            set slot 0 of metadata tag "ContinentMenuGUI" of player to fern named "{@continentMithloth}"
+            set slot 1 of metadata tag "ContinentMenuGUI" of player to red tulip named "{@continentRin}"
+            set slot 2 of metadata tag "ContinentMenuGUI" of player to fire charge named "{@continentSunmere}"
+            set slot 3 of metadata tag "ContinentMenuGUI" of player to peony named "{@continentThorin}"
+            open (metadata tag "ContinentMenuGUI" of player) to player
+
+command /continent_assign <string>:
+    executable by: players
+    usage: &cUsage: &7/continent_assign <continent>
+    description: Assigns a player to a continent.
+    permission: continent.admin
+    permission message: &cDenied.
+    trigger:
+        if arg-1 is "mithloth":
+            set {_continent} to "{@continentMithloth}"
+        else if arg-1 is "rin":
+            set {_continent} to "{@continentRin}"
+        else if arg-1 is "sunmere":
+            set {_continent} to "{@continentSunmere}"
+        else if arg-1 is "thorin":
+            set {_continent} to "{@continentThorin}"
+        execute command "/pex user %player% group set %arg-1%"
+        make player execute command "/spawn"
+        set {stats::%player's uuid%::continentChosen} to true
+        make player say "&6I have chosen &r%{_continent}%&6 has my continent!"
+        send "{@prefix} &cIf you wish to switch continents, go to the &eInternational Shop&c and pay the fee." to player
+
+command /continent_change <player>:
+    executable by: players and console
+    usage: &cUsage: &7/continent_change <player>
+    description: Allows the player to change their continent.
+    permission: continent.admin
+    permission message: &cDenied.
+    trigger:
+        delete {stats::%arg-1's uuid%::continentChosen}
+
+command /continent_info:
+    executable by: console and players
+    usage: &cUsage: /continent_info
+    description: Sends general information about the land.
+    trigger:
+        send "{@prefix} &6Welcome to <##7b84d1>ForSaken Borders&6! Please take a look at our Dynmap:"
+        send "&7https://mc.forsaken-borders.net/dynmap/"
+        send "&6There are a total of 4 continents. Each continent has a lord (owner/moderator), a butler (co-leader/mini-moderator) and unique biomes/terrain."
+        send "&6In the top left: The Wasteland Continent, {@continentSunmere}&6. Owner: Cookie. Butler: Hohn. The second largest continent, with the most military force."
+        send "&6In the bottom left: The Snowy Mountain Continent, {@continentRin}&6. Owner: Lunar. Butler: Ben. The smallest continent, but has good relations with everyone."
+        send "&6In the top right: Mithloth. Owner: Abby. Butler: Unknown. Continent for high trees and big lakes."
+        send "&6In the bottom right: The Continent of Mystery: {@continentThorin}&6. Owner: Lioness. Butler: Lavender. The largest continent. Full of plains biomes, mesa biomes and small forests, there will not be a shortage of resources anywhere."
+        send "&6To pick your continent, go and read the three signs at spawn. Each continent should be distinctly sectioned off from each other, enabling a clear set of options to choose from."
+        send "&6Execute the command &7/continent_menu&6 to choose your continent."
+
+command /continent_create_warp <string>:
+    executable by: players
+    usage: &cUsage: /continent_create_warp <warp name>
+    description: Creates a continental warp.
+    permission: continent.warps.create
+    permission message: &cYou must be a lord or butler to create a continental warp!
+    trigger:
+        if group of player is "lord_of_rin":
+            set {_continent} to "{@continentRin}"
+            set {_continent_rank} to "rin"
+        else if group of player is "lord_of_sunmere":
+            set {_continent} to "{@continentSunmere}"
+            set {_continent_rank} to "sunmere"
+        else if group of player is "lord_of_thorin":
+            set {_continent} to "{@continentThorin}"
+            set {_continent_rank} to "thorin"
+        else if group of player is "lord_of_mithloth":
+            set {_continent} to "{@continentMithloth}"
+            set {_continent_rank} to "mithloth"
+        else if group of player is "butler_of_rin":
+            set {_continent} to "{@continentRin}"
+            set {_continent_rank} to "rin"
+        else if group of player is "butler_of_sunmere":
+            set {_continent} to "{@continentSunmere}"
+            set {_continent_rank} to "sunmere"
+        else if group of player is "butler_of_thorin":
+            set {_continent} to "{@continentThorin}"
+            set {_continent_rank} to "thorin"
+        else if group of player is "butler_of_mithloth":
+            set {_continent} to "{@continentMithloth}"
+            set {_continent_rank} to "mithloth"
+        else:
+            send "&cYou must be a lord or butler to create a continental warp!"
+            stop trigger
+        make the command sender execute "/createwarp %{_continent_rank}%_%arg-1%"
+
+command /continent_delete_warp <string>:
+    executable by: players
+    usage: &cUsage: /continent_delete_warp <warp name>
+    description: Delete's a continental warp.
+    permission: continent.warps.delete
+    permission message: &cYou must be a lord or butler to delete a continental warp!
+    trigger:
+        if group of player is "lord_of_rin":
+            set {_continent} to "{@continentRin}"
+            set {_continent_rank} to "rin"
+        else if group of player is "lord_of_sunmere":
+            set {_continent} to "{@continentSunmere}"
+            set {_continent_rank} to "sunmere"
+        else if group of player is "lord_of_thorin":
+            set {_continent} to "{@continentThorin}"
+            set {_continent_rank} to "thorin"
+        else if group of player is "lord_of_mithloth":
+            set {_continent} to "{@continentMithloth}"
+            set {_continent_rank} to "mithloth"
+        else if group of player is "butler_of_rin":
+            set {_continent} to "{@continentRin}"
+            set {_continent_rank} to "rin"
+        else if group of player is "butler_of_sunmere":
+            set {_continent} to "{@continentSunmere}"
+            set {_continent_rank} to "sunmere"
+        else if group of player is "butler_of_thorin":
+            set {_continent} to "{@continentThorin}"
+            set {_continent_rank} to "thorin"
+        else if group of player is "butler_of_mithloth":
+            set {_continent} to "{@continentMithloth}"
+            set {_continent_rank} to "mithloth"
+        else:
+            send "&cYou must be a lord or butler to delete a continental warp!"
+            stop trigger
+        make the command sender execute "/delwarp %{_continent_rank}%_%arg-1%"
+        send "{@prefix} %player's display name%&c has deleted a continental warp: %arg-1%" to all players where [player has permission "superchats.%{_continentalRank}%"]
+
+command /continent_warp <player> <string>:
+    executable by: console and players
+    usage: &cUsage: /continent_warp <player> <warp name>
+    description: Teleports a player to their warp.
+    permission: continent.warps.teleport
+    permission message: &cYou must be a lord or butler to issue a continental warp!
+    trigger:
+        if group of player is "lord_of_rin":
+            set {_continent} to "{@continentRin}"
+            set {_continent_rank} to "rin"
+        else if group of player is "lord_of_sunmere":
+            set {_continent} to "{@continentSunmere}"
+            set {_continent_rank} to "sunmere"
+        else if group of player is "lord_of_thorin":
+            set {_continent} to "{@continentThorin}"
+            set {_continent_rank} to "thorin"
+        else if group of player is "lord_of_mithloth":
+            set {_continent} to "{@continentMithloth}"
+            set {_continent_rank} to "mithloth"
+        else if group of player is "butler_of_rin":
+            set {_continent} to "{@continentRin}"
+            set {_continent_rank} to "rin"
+        else if group of player is "butler_of_sunmere":
+            set {_continent} to "{@continentSunmere}"
+            set {_continent_rank} to "sunmere"
+        else if group of player is "butler_of_thorin":
+            set {_continent} to "{@continentThorin}"
+            set {_continent_rank} to "thorin"
+        else if group of player is "butler_of_mithloth":
+            set {_continent} to "{@continentMithloth}"
+            set {_continent_rank} to "mithloth"
+        else:
+            send "&cYou must be a lord or butler to issue a continental warp!"
+            stop trigger
+        make the command sender execute "/warp %{_continent_rank}%_%arg-2% %arg-1%"

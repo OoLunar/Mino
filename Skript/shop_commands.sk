@@ -1,0 +1,61 @@
+options:
+    prefix: &8[&cContinent&8]&r
+
+command /home_add <player>:
+    executable by: console
+    usage: &cUsage: &7/home_add <player>
+    description: Gives the player another home. A max of 10 homes can be added.
+    trigger:
+        set {_player} to arg-1
+        if {_player} does not have permission "essentials.sethome.multiple":
+            execute command "/pex user %{_player}% add essentials.sethome.multiple"
+
+        if {_player} does not have permission "essentials.sethome.multiple.second":
+            execute command "/pex user %{_player}% add essentials.sethome.multiple.second"
+            send "{@prefix} Added a home! You now have 2/10 homes unlocked!" to {_player}
+        else if {_player} does not have permission "essentials.sethome.multiple.third":
+            execute command "/pex user %{_player}% add essentials.sethome.multiple.third"
+            send "{@prefix} Added a home! You now have 3/10 homes unlocked!" to {_player}
+        else if {_player} does not have permission "essentials.sethome.multiple.fourth":
+            execute command "/pex user %{_player}% add essentials.sethome.multiple.fourth"
+            send "{@prefix} Added a home! You now have 4/10 homes unlocked!" to {_player}
+        else if {_player} does not have permission "essentials.sethome.multiple.fifth":
+            execute command "/pex user %{_player}% add essentials.sethome.multiple.fifth"
+            send "{@prefix} Added a home! You now have 5/10 homes unlocked!" to {_player}
+        else if {_player} does not have permission "essentials.sethome.multiple.sixth":
+            execute command "/pex user %{_player}% add essentials.sethome.multiple.sixth"
+            send "{@prefix} Added a home! You now have 6/10 homes unlocked!" to {_player}
+        else if {_player} does not have permission "essentials.sethome.multiple.seventh":
+            execute command "/pex user %{_player}% add essentials.sethome.multiple.seventh"
+            send "{@prefix} Added a home! You now have 7/10 homes unlocked!" to {_player}
+        else if {_player} does not have permission "essentials.sethome.multiple.eighth":
+            execute command "/pex user %{_player}% add essentials.sethome.multiple.eighth"
+            send "{@prefix} Added a home! You now have 8/10 homes unlocked!" to {_player}
+        else if {_player} does not have permission "essentials.sethome.multiple.ninth":
+            execute command "/pex user %{_player}% add essentials.sethome.multiple.ninth"
+            send "{@prefix} Added a home! You now have 9/10 homes unlocked!" to {_player}
+        else if {_player} does not have permission "essentials.sethome.multiple.tenth":
+            execute command "/pex user %{_player}% add essentials.sethome.multiple.tenth"
+            send "{@prefix} Added a home! You now have 10/10 homes unlocked!" to {_player}
+        else:
+            send "You've already unlocked all 10/10 homes!" to {_player}
+            execute command "/eco give %{_player}% 10000"
+
+command /enderchest_add <player>:
+    executable by: console
+    usage: &cUsage: &7/enderchest_add <player>
+    description: Gives the player another enderchest row. A max of 3 rows can be added.
+    trigger:
+        set {_player} to arg-1
+        if {_player} does not have permission "purpur.enderchest.rows.four":
+            execute command "/pex user %{_player}% add purpur.enderchest.rows.four"
+            send "{@prefix} Added a home! You now have 4/6 enderchest rows unlocked!" to {_player}
+        else if {_player} does not have permission "purpur.enderchest.rows.five":
+            execute command "/pex user %{_player}% add purpur.enderchest.rows.five"
+            send "{@prefix} Added a home! You now have 5/6 enderchest rows unlocked!" to {_player}
+        else if {_player} does not have permission "purpur.enderchest.rows.six":
+            execute command "/pex user %{_player}% add purpur.enderchest.rows.six"
+            send "{@prefix} Added a home! You now have 6/6 enderchest rows unlocked!" to {_player}
+        else:
+            send "You've already unlocked all 6/6 enderchest rows!" to {_player}
+            execute command "/eco give %{_player}% 40000"

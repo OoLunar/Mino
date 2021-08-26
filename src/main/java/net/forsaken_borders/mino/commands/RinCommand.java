@@ -20,6 +20,7 @@ import net.md_5.bungee.api.ChatColor;
 public class RinCommand extends BaseCommand {
     @Subcommand("portal_room")
     @CommandPermission("mino.rin.portal_room")
+    @Description("Teleports the player to Rin's portal room.")
     public void portal_room(Player player) {
         try {
             Location location = App.Essentials.getWarps().getWarp("rin_portal_room");
@@ -36,6 +37,7 @@ public class RinCommand extends BaseCommand {
 
     @Subcommand("purchase_portal_room")
     @CommandPermission("mino.rin.purchase_portal_room")
+    @Description("Buys access to Rin's portal room.")
     public void purchase_portal_room(Player player) {
         if (player.hasPermission("mino.rin.portal_room")) {
             player.sendMessage(App.Prefix + ChatColor.RED + "Error: You already have access to the portal room.");

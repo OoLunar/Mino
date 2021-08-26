@@ -35,8 +35,7 @@ public class OnPlayerJoin implements Listener {
                 for (ItemStack itemStack : onlinePlayer.getInventory().getContents()) {
                     if (itemStack != null) {
                         ItemMeta meta = itemStack.getItemMeta();
-                        if (meta instanceof Damageable) {
-                            Damageable damageable = (Damageable) meta;
+                        if (meta instanceof Damageable damageable) {
                             damageable.setDamage(0);
                             itemStack.setItemMeta(meta);
                         }

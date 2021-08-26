@@ -1,5 +1,7 @@
 package net.forsaken_borders.mino;
 
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import com.earth2me.essentials.Essentials;
@@ -22,6 +24,7 @@ import net.forsaken_borders.mino.event_listeners.OnPlayerJoin;
 import net.forsaken_borders.mino.event_listeners.OnPlayerQuit;
 import net.forsaken_borders.mino.event_listeners.OnServerListPing;
 import net.forsaken_borders.mino.event_listeners.OnSprint;
+import net.forsaken_borders.mino.timers.MiningWorldReset;
 import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -71,5 +74,8 @@ public class App extends JavaPlugin {
         pluginManager.registerEvents(new OnPlayerQuit(), this);
         pluginManager.registerEvents(new OnDamage(), this);
         pluginManager.registerEvents(new OnServerListPing(), this);
+
+        Timer timer = new Timer();
+        timer.schedule(new MiningWorldReset(getServer()), TimeUnit.HOURS.toMillis(6));
     }
 }

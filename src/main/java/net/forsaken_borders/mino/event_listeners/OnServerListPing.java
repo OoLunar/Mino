@@ -12,7 +12,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import net.forsaken_borders.mino.App;
-import net.md_5.bungee.api.ChatColor;
 
 public class OnServerListPing implements Listener {
     @EventHandler
@@ -22,8 +21,9 @@ public class OnServerListPing implements Listener {
             playerProfiles.add(Bukkit.createProfile(onlinePlayer.displayName().toString()));
         }
 
-        // TODO: Send player names, or "Nobody is online!" if nobody is online.
-        playerProfiles.add(Bukkit.createProfile(ChatColor.of("#7b84d1") + "Mino"));
+        if(playerProfiles.isEmpty()) {
+            playerProfiles.add(Bukkit.createProfile("Nobody is online!"));
+        }
 
         List<PlayerProfile> playerSamples = event.getPlayerSample();
         playerSamples.clear();

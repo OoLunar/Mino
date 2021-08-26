@@ -5,16 +5,23 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import net.kyori.adventure.text.TextReplacementConfig;
+
 public class OnDeath implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
         Player killer = event.getEntity().getKiller();
-        // TODO: Remove warnings
+        var textReplacementBuilder = TextReplacementConfig.builder()
+            .match(player.getName())
+            .replacement(player.displayName());
+
         if (killer != null) {
-            event.deathMessage().replaceText(killer.getName(), killer.displayName());
+            textReplacementBuilder = textReplacementBuilder
+                .match(killer.getName())
+                .replacement(killer.displayName());
         }
 
-        Player player = event.getEntity();
-        event.deathMessage().replaceText(player.getName(), player.displayName());
+        event.deathMessage(event.deathMessage().replaceText(textReplacementBuilder.build()));
     }
 }

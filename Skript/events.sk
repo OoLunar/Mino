@@ -18,19 +18,3 @@ on command "/fireball":
 on command "/rest":
     if player has permission "essentials.rest":
         set time of player's world to day
-
-every 6 hours:
-    broadcast "{@prefix} &cThe mining world will reset in &75 &cminutes!"
-    wait 5 minutes
-    broadcast "{@prefix} &cThe mining world is resetting!"
-    loop all players in world("mining"):
-        make loop-player execute command "/spawn"
-    execute command "/mvdelete mining"
-    wait 1 seconds
-    execute command "/mvconfirm"
-    wait 10 seconds
-    execute command "/mvcreate mining normal -t AMPLIFIED"
-    wait 20 seconds
-    execute command "/mvgamerule keepInventory true mining"
-    execute command "/mvpmodify destination mining -p mining"
-    broadcast "{@prefix} &aThe mining world has been reset!"

@@ -14,7 +14,7 @@ public class OnSprint implements Listener {
     @EventHandler
     public void onSprint(PlayerToggleSprintEvent event) {
         Player player = event.getPlayer();
-        if (!player.hasPermission("mino.sprint")) {
+        if (!player.hasPermission("mino.skills.sprint")) {
             return;
         }
 

@@ -3,10 +3,12 @@ package net.forsaken_borders.mino;
 import java.util.logging.Logger;
 
 import com.earth2me.essentials.Essentials;
+import com.onarandombox.MultiverseCore.MultiverseCore;
 
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import co.aikar.commands.PaperCommandManager;
@@ -26,68 +28,48 @@ import net.milkbowl.vault.permission.Permission;
 
 public class App extends JavaPlugin {
     public static String Prefix = ChatColor.DARK_GRAY + "[" + ChatColor.of("#7b84d1") + "Mino" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET + " ";
-    public static Logger Logger = null;
-    public static Economy Economy = null;
-    public static Permission Permissions = null;
-    public static Essentials Essentials = null;
+    public static Logger Logger;
+    public static Economy Economy;
+    public static Permission Permissions;
+    public static Essentials Essentials;
+    public static MultiverseCore MultiverseCore;
+    public static Plugin Vault;
 
     @Override
     public void onEnable() {
-        OnSprint.sprints.clear();
-        for (Player p : getServer().getOnlinePlayers()) {
-            OnSprint.sprints.put(p.getUniqueId(), false);
+        PaperCommandManager manager = new PaperCommandManager(this);
+        ServicesManager servicesManager = Bukkit.getServicesManager();
+        PluginManager pluginManager = Bukkit.getPluginManager();
+
+        Logger = getLogger();
+        Economy = servicesManager.getRegistration(Economy.class).getProvider();
+        Permissions = servicesManager.getRegistration(Permission.class).getProvider();
+        Essentials = (Essentials) pluginManager.getPlugin("Essentials");
+        MultiverseCore = (MultiverseCore) pluginManager.getPlugin("Multiverse-Core");
+        Vault = pluginManager.getPlugin("Vault");
+
+        if(Vault == null) {
+            Logger.severe("Vault is not installed! Vault is required for permissions and (optionally) economy.");
+            Logger.severe("Disabling Mino...");
+            pluginManager.disablePlugin(this);
+            return;
         }
 
-        PaperCommandManager manager = new PaperCommandManager(this);
         manager.registerCommand(new MapCommand());
         manager.registerCommand(new ShrugCommand());
         manager.registerCommand(new SprintCommand());
         manager.registerCommand(new ThrowCommand());
-        manager.registerCommand(new RinCommand());
 
-        Logger = getLogger();
-        PluginManager pluginManager = getServer().getPluginManager();
+        if(Essentials != null && Permissions != null && Economy != null) {
+            manager.registerCommand(new RinCommand());
+        } else {
+            Logger.warning("Essentials, Vault, and Vault-Economy are required for Rin to work. Rin will not be able to use their commands!");
+        }
+
         pluginManager.registerEvents(new OnSprint(), this);
         pluginManager.registerEvents(new OnPlayerJoin(), this);
         pluginManager.registerEvents(new OnPlayerQuit(), this);
         pluginManager.registerEvents(new OnDamage(), this);
         pluginManager.registerEvents(new OnServerListPing(), this);
-        if (!vaultEnabled()) {
-            Logger.warning("Vault is not enabled! Commands that require permissions or economy will be disabled.");
-        }
-
-        setupEconomy();
-        setupPermissions();
-
-        if (Economy == null) {
-            Logger.warning("Economy is not enabled! Commands that require economy will be disabled.");
-        }
-
-        if (Permissions == null) {
-            Logger.warning("Permissions are not enabled! Commands that require permissions will be disabled.");
-        }
-
-        Essentials = (Essentials) getServer().getPluginManager().getPlugin("Essentials");
-        if (Essentials == null) {
-            Logger.warning("Essentials is not enabled! Commands that require essentials will be disabled.");
-        }
-
-        if (Economy != null && Permissions != null && Essentials != null) {
-            //manager.registerCommand(new CommandRin());
-        }
-    }
-
-    private boolean vaultEnabled() {
-        return getServer().getPluginManager().getPlugin("Vault") != null;
-    }
-
-    private void setupEconomy() {
-        RegisteredServiceProvider<Economy> economyServiceProvider = getServer().getServicesManager().getRegistration(Economy.class);
-        Economy = economyServiceProvider.getProvider();
-    }
-
-    private void setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        Permissions = rsp.getProvider();
     }
 }

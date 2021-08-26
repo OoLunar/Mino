@@ -30,7 +30,7 @@ public class RinCommand extends BaseCommand {
                 player.teleport(location);
             }
         } catch (WarpNotFoundException | InvalidWorldException e) {
-            player.sendMessage(ChatColor.RED + "Error: The warp to the portal room has been deleted.");
+            player.sendMessage(App.Prefix + ChatColor.RED + "Error: The warp to the portal room has been deleted.");
         }
     }
 
@@ -38,7 +38,7 @@ public class RinCommand extends BaseCommand {
     @CommandPermission("mino.rin.purchase_portal_room")
     public void purchase_portal_room(Player player) {
         if (player.hasPermission("mino.rin.portal_room")) {
-            player.sendMessage(ChatColor.RED + "Error: You already have access to the portal room.");
+            player.sendMessage(App.Prefix + ChatColor.RED + "Error: You already have access to the portal room.");
             return;
         }
 
@@ -48,7 +48,7 @@ public class RinCommand extends BaseCommand {
             App.Permissions.playerAdd(null, player, "mino.rin.portal_room");
             player.sendMessage(ChatColor.GREEN + "At the cost of 3000" + App.Economy.currencyNameSingular() + ", you now have access to Rin's Portal Room! Use " + ChatColor.GRAY + "/rin portal_room" + ChatColor.GREEN + " to enter it.");
         } else {
-            player.sendMessage(ChatColor.RED + "Error: You're " + Math.round(3000 - App.Economy.getBalance(player)) + App.Economy.currencyNameSingular() + " short!");
+            player.sendMessage(App.Prefix + ChatColor.RED + "Error: You're " + Math.round(3000 - App.Economy.getBalance(player)) + App.Economy.currencyNameSingular() + " short!");
         }
     }
 }

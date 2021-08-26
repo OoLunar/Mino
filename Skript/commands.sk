@@ -1,10 +1,3 @@
-command /build:
-    executable by: players
-    usage: &cUsage: &7/build
-    description: Teleports you to the build world.
-    trigger:
-        execute command "/mvtp %player% build"
-
 command /ninja:
     executable by: players
     usage: &cUsage: &7/ninja

@@ -5,4 +5,4 @@ server/
 .project/
 .settings/
 src/test/
-./anti-word-wrap-formatter.xml
+anti-word-wrap-formatter.xml

@@ -1,8 +1,3 @@
-on chat:
-    replace "<3" with "&c❤&r" in message
-    replace "/shrug" with "¯\_(ツ)_/¯" in message
-    replace "$" with "ẓ" in message
-
 on command "/fireball":
     if player has permission "essentials.fireball":
         if unix timestamp of now >= {stats::%player's uuid%::fireballTimeout}:

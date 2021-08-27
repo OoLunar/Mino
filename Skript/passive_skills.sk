@@ -14,13 +14,3 @@ on rightclick with a sword:
                 send action bar "&aAdrenaline gives you strength!" to player
             else:
                 send action bar "&c%{stats::%player's uuid%::strengthTimeout} - (unix timestamp of now)% second cooldown!" to player
-
-on eat of rotten flesh:
-    if {stats::%player's uuid%::permissions::monsterEyes} is true:
-        cancel event
-        remove 1 rotten flesh from player
-        set the player's food level to player's food level + 4
-        set saturation of player to saturation of player + 0.8
-        set {_randomNumber} to random number between 0 and 100
-        if {_randomNumber} >= 40:
-            apply potion of night vision to the player for 30 seconds

@@ -6,13 +6,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.TextReplacementConfig.Builder;
 
 public class OnDeath implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         Player killer = event.getEntity().getKiller();
-        var textReplacementBuilder = TextReplacementConfig.builder()
+        Builder textReplacementBuilder = TextReplacementConfig.builder()
             .match(player.getName())
             .replacement(player.displayName());
 

@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.dynmap.DynmapAPI;
 
 import co.aikar.commands.PaperCommandManager;
 import net.forsaken_borders.mino.commands.MapCommand;
@@ -19,7 +20,9 @@ import net.forsaken_borders.mino.commands.RinCommand;
 import net.forsaken_borders.mino.commands.ShrugCommand;
 import net.forsaken_borders.mino.commands.SprintCommand;
 import net.forsaken_borders.mino.commands.ThrowCommand;
+import net.forsaken_borders.mino.event_listeners.OnChat;
 import net.forsaken_borders.mino.event_listeners.OnDamage;
+import net.forsaken_borders.mino.event_listeners.OnEat;
 import net.forsaken_borders.mino.event_listeners.OnPlayerJoin;
 import net.forsaken_borders.mino.event_listeners.OnPlayerQuit;
 import net.forsaken_borders.mino.event_listeners.OnServerListPing;
@@ -32,23 +35,25 @@ import net.milkbowl.vault.permission.Permission;
 public class App extends JavaPlugin {
     public static String Prefix = ChatColor.DARK_GRAY + "[" + ChatColor.of("#7b84d1") + "Mino" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET + " ";
     public static Logger Logger;
+    public static DynmapAPI DynmapAPI;
     public static Economy Economy;
-    public static Permission Permissions;
     public static Essentials Essentials;
     public static MultiverseCore MultiverseCore;
+    public static Permission Permissions;
     public static Plugin Vault;
 
     @Override
     public void onEnable() {
         PaperCommandManager manager = new PaperCommandManager(this);
-        ServicesManager servicesManager = Bukkit.getServicesManager();
         PluginManager pluginManager = Bukkit.getPluginManager();
+        ServicesManager servicesManager = Bukkit.getServicesManager();
 
         Logger = getLogger();
+        DynmapAPI = (DynmapAPI) pluginManager.getPlugin("dynmap");
         Economy = servicesManager.getRegistration(Economy.class).getProvider();
-        Permissions = servicesManager.getRegistration(Permission.class).getProvider();
         Essentials = (Essentials) pluginManager.getPlugin("Essentials");
         MultiverseCore = (MultiverseCore) pluginManager.getPlugin("Multiverse-Core");
+        Permissions = servicesManager.getRegistration(Permission.class).getProvider();
         Vault = pluginManager.getPlugin("Vault");
 
         if(Vault == null) {
@@ -69,11 +74,13 @@ public class App extends JavaPlugin {
             Logger.warning("Essentials, Vault, and Vault-Economy are required for Rin to work. Rin will not be able to use their commands!");
         }
 
-        pluginManager.registerEvents(new OnSprint(), this);
+        pluginManager.registerEvents(new OnChat(), this);
+        pluginManager.registerEvents(new OnDamage(), this);
+        pluginManager.registerEvents(new OnEat(), this);
         pluginManager.registerEvents(new OnPlayerJoin(), this);
         pluginManager.registerEvents(new OnPlayerQuit(), this);
-        pluginManager.registerEvents(new OnDamage(), this);
         pluginManager.registerEvents(new OnServerListPing(), this);
+        pluginManager.registerEvents(new OnSprint(), this);
 
         Timer timer = new Timer();
         timer.schedule(new MiningWorldReset(getServer()), TimeUnit.HOURS.toMillis(6));
